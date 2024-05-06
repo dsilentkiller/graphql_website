@@ -1,0 +1,31 @@
+
+python -m venv venv 
+
+venv/scripts/activate
+
+pip install django 
+
+django-admin startproject graphql_website
+
+cd graphql_website 
+
+pip freeze > requirements.txt
+
+python manage.py startapp customuser
+
+pip install graphene-django
+pip install django-filter
+
+
+
+########################
+CSRF exempt
+If you have enabled CSRF protection in your Django app you will find that it prevents your API clients from POSTing to the graphql endpoint. You can either update your API client to pass the CSRF token with each request.
+
+
+##question 
+query 
+name , how to give name in query?
+#####################
+
+
