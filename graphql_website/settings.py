@@ -42,16 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     ##### added #####
-    # Required for GraphiQL
-    'graphene_django',
     # local apps
     # 'customuser',
     'ingredients',
+    'blog',
+
+
+    # Required for GraphiQL
+    'graphene_django',
+
     'graphql_auth',
     # ' django_filters',
-
     # jwt
-
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 
 
