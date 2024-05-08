@@ -1,5 +1,5 @@
 import graphene
-# import customuser.schema
+import customuser.schema
 # from graphql_auth.schema import UserQuery, MeQuery
 import blog.schema
 # user
@@ -13,11 +13,11 @@ import blog.schema
 
 # schema = graphene.Schema(query=Query, mutation=Mutation)
 # blog
-class Query(blog.schema.Query, graphene.ObjectType):
+class Query(customuser.schema.Query, blog.schema.Query, graphene.ObjectType):
     pass
 
 
-class Mutation(blog.schema.Mutation, graphene.ObjectType):
+class Mutation(customuser.schema.Mutation, blog.schema.Mutation, graphene.ObjectType):
     pass
 
 
