@@ -1,8 +1,63 @@
+from graphql_jwt.shortcuts import create_refresh_token, get_token
+from graphene_jwt.decorators import login_required
+from graphene_django import DjangoObjectType
 import graphene
+import graphql_jwt
+from django.contrib.auth import get_user_model
+
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
+
+
+class CreateUser(graphene.Mutation):
+    user = graphene.Field(UserType)
+    token = graphene.String()
+    refresh_token = graphene.String()
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        email = graphene.String(required=True)
+
+    def mutate(self, info, username, password, email):
+        user = get_user_model()(
+            username=username,
+            email=email
+        )
+        user.set_password(password)
+        user.save()
+        token = get_token(user)
+        refresh_token = create_refresh_token(user)
+        return CreateUser(user=user, token=token, refresh_token=refresh_token)
 
 
 class Query(graphene.ObjectType):
-    hello = graphene.String(default_value='hi')
+    whoami = graphene.Field(UserType)
+    users = graphene.List(UserType)
+
+    def resolve_whoami(self, info):
+        user = info.context.user
+
+        # chekc if user is authenticated
+
+        if user.is_anonymous:
+            raise Exception('Authentication Failure: your must be login')
+        return user
+# check if user is authenticated using decorator
+
+    def resolve_users(self, info):
+        return get_user_model().objects.all()
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.field()
+    refresh_token = graphql_jwt.Refresh.Field()
+    verify_token = graphql_jwt.verify.Field()
+    create_user = CreateUser.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
+
+# 9860422021

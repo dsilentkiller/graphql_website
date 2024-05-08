@@ -16,6 +16,9 @@ python manage.py startapp customuser
 pip install graphene-django
 pip install django-filter
 
+#authentication with jwt
+pip install django-graphql-jwt
+pip install django-graphql-auth
 
 
 ########################
@@ -26,6 +29,11 @@ If you have enabled CSRF protection in your Django app you will find that it pre
 ##question 
 query 
 name , how to give name in query?
+
+
+Understanding JSON Web Token
+    They consist of three parts: a header, a payload, and a signature.
+
 #####################
 
 

@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import datetime, timedelta
+import django
+from django.utils.translation import gettext
+# django.utils.translation.ugettext = gettext
+from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,7 +44,20 @@ INSTALLED_APPS = [
     ##### added #####
     # Required for GraphiQL
     'graphene_django',
+    # local apps
+    # 'customuser',
     'ingredients',
+    'graphql_auth',
+    # ' django_filters',
+
+    # jwt
+
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+
+
+
+    'django_filters',
+    'django_crontab',
 
 ]
 
@@ -129,7 +146,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ########################### added ####################
 
 
+GRAPHQL_JWT = {
+    "JWT_AUTH_HEADER_PREFIX": "Bearer",
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    "JWT_EXPIRATION_DELTA": timedelta(minutes=10),
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=7),
+    "JWT_SECRET_KEY": SECRET_KEY,
+    "JWT_ALGORITHM": "HS256",
+}
+
 GRAPHENE = {
     'SCHEMA': 'ingredients.schema.schema',
+    # 'SCHEMA': 'customuser.schema.schema',
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+    "graphql_auth.backends.GraphQLAuthBackend",
+]
+# AUTH_USER_MODEL = 'customuser.ExtendUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #########################
