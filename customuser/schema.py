@@ -1,5 +1,5 @@
 from graphql_jwt.shortcuts import create_refresh_token, get_token
-from graphene_jwt.decorators import login_required
+# from graphene_jwt.decorators import login_required
 from graphene_django import DjangoObjectType
 import graphene
 import graphql_jwt
@@ -52,9 +52,9 @@ class Query(graphene.ObjectType):
 
 
 class Mutation(graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.field()
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     refresh_token = graphql_jwt.Refresh.Field()
-    verify_token = graphql_jwt.verify.Field()
+    verify_token = graphql_jwt.Verify.Field()
     create_user = CreateUser.Field()
 
 

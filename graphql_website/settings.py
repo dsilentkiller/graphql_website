@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     ##### added #####
     # local apps
-    # 'customuser',
+    'customuser',
     'ingredients',
     'blog',
 
